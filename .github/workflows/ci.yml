@@ -1,12 +1,10 @@
-name: CI Pipeline
+name: Java CI/CD
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
@@ -16,13 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
         with:
-          node-version: '18'
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Build with Maven
+        run: mvn clean install
 
-      - name: Run build
-        run: npm run build
+      - name: Run tests
+        run: mvn test
